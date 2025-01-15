@@ -1,6 +1,5 @@
 import { Op } from "sequelize";
 import Item from "../models/item.model.js";
-let id = 0;
 
 export const getItems = async () => {
     let data = await Item.findAll();
@@ -22,7 +21,7 @@ export const getItemsBySearch =async (filters) => {
             }
         });
     }
-    if (filters.cayegory) {
+    if (filters.category) {
         Object.assign(whereFilters, {category: filters.category });
     }
     if (filters.maxPrice || filters.minPrice) {

@@ -49,3 +49,4 @@ await User.sync({
 }); 
 export default User;
 
+
