@@ -23,6 +23,8 @@ const Item = sequelize.define(modelName, {
         type: DataTypes.ENUM('Celulares', 'Laptop', 'Tablet', 'Accesorios'),
         allowNull: false
     }
+},{
+    paranoid: true
 });
 
 await Item.sync({
