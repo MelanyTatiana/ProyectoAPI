@@ -1,10 +1,30 @@
+import { getItemById, getItemsBySearch, getItems, createItem, updateItem, deleteItem} from "../controllers/item.controller.js";
 import express from "express";
-import { getItemById, getItemsBySearch, getItems, createItem, updateItem, deleteItem } from "../controllers/item.controller.js";
+
 
 const itemRouter = express.Router();
 
-itemRouter.get('/search', getItemsBySearch);
-itemRouter.get('/:id', getItemById);
+itemRouter.get('/search', (req, res) => {
+    getItemsBySearch(req.query).then((data) => {
+        if (data.length) {
+            res.status(200).json(data);
+        }else {
+            res.status(404).json({message: "Item nor found."});
+        }
+    }).catch((err) => {
+        console.error("Error on GET /search route:", err);
+        res.status(500).json({message: err});
+    });
+});
+
+itemRouter.get('/:id', (req, res) => {
+    getItemById(req.params.id).then((data) => {
+        res.status(200).json(data);
+    }).catch((err) => {
+        console.error("Error on GET /:id route:", err);
+        res.status(500).json({message: err});
+    });
+});
 
 itemRouter.get('/', (req, res) => {
     getItems().then((data) => {
@@ -14,6 +34,7 @@ itemRouter.get('/', (req, res) => {
         res.status(500).json({message: err});
     });
 });
+
 
 itemRouter.post('/', (req, res) => {
     createItem(req.body).then((data) => {
@@ -38,7 +59,6 @@ itemRouter.put('/:id', (req, res) => {
     });
 });
 
-itemRouter.put('/:id', updateItem);
-itemRouter.delete('/:id', deleteItem);
+
 
 export default itemRouter;
